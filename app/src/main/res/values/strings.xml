@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HRApp</string>
+    <string name="greeting">Welcome, dear HR specialist. Please, choose the position of employee to interview.</string>
+    <string-array name="levels">
+        <item>All</item>
+        <item>Junior</item>
+        <item>Middle</item>
+        <item>Senior</item>
+    </string-array>
+    <string name="main_nav_title">Main</string>
+    <string name="favorites_nav_title">Favorites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

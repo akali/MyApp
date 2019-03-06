@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "807268493536",
+    "firebase_url": "https://hrdb-4dcaf.firebaseio.com",
+    "project_id": "hrdb-4dcaf",
+    "storage_bucket": "hrdb-4dcaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807268493536:android:a62b237150c9277d",
+        "android_client_info": {
+          "package_name": "com.example.hrapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807268493536-ad6cgmmje7cng35k76g2q66ivf91ddhd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBee0oTGSlvm6aAfN6o0qj_Yj4lRweI6_E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
