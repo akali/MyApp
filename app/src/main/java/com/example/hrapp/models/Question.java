@@ -1,5 +1,7 @@
 package com.example.hrapp.models;
 
+import java.util.List;
+
 public class Question {
 
     private int mId;
@@ -62,4 +64,5 @@ public class Question {
     public void setPosition(String position) {
         mPosition = position;
     }
+
 }

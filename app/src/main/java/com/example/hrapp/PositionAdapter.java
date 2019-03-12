@@ -46,7 +46,6 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.Positi
     class PositionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mPositionTextName;
-
         private Position mPosition;
 
         public PositionViewHolder(@NonNull View itemView) {

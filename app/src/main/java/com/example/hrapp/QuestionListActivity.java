@@ -1,5 +1,6 @@
 package com.example.hrapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -7,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import com.example.hrapp.models.Favorite;
 import com.example.hrapp.models.Question;
@@ -43,7 +47,7 @@ public class QuestionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
 
-         mPositionName = getIntent().getStringExtra("positionName");
+        mPositionName = getIntent().getStringExtra("positionName");
 
         mAddQuestionButton = (FloatingActionButton) findViewById(R.id.add_question);
         mRecyclerView = (RecyclerView) findViewById(R.id.questions_recycler);
@@ -79,7 +83,7 @@ public class QuestionListActivity extends AppCompatActivity {
                         mQuestionList.add(value);
                     }
                 }
-                mQuestionAdapter = new QuestionAdapter(mQuestionList);
+                mQuestionAdapter = new QuestionAdapter(mQuestionList, listener);
                 mQuestionAdapter.setFavoriteList(mFavoriteList);
                 mRecyclerView.setAdapter(mQuestionAdapter);
             }
@@ -107,4 +111,49 @@ public class QuestionListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_action);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mQuestionAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mQuestionList.clear();
+        mFavoriteList.clear();
+        initFavoriteList();
+        initQuestionList();
+    }
+
+    RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, int position) {
+            Toast.makeText(view.getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(view.getContext(), QuestionDetailsActivity.class);
+            startActivity(intent);
+        }
+    };
 }

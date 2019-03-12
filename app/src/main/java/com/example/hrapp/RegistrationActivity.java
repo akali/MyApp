@@ -1,5 +1,6 @@
 package com.example.hrapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -8,13 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import dmax.dialog.SpotsDialog;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -24,7 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText mPasswordText;
     private Button mRegisterButton;
 
-    private ProgressDialog mProgressDialog;
+    private AlertDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,15 @@ public class RegistrationActivity extends AppCompatActivity {
         String email = mEmailText.getText().toString();
         String password = mPasswordText.getText().toString();
 
+        new SpotsDialog.Builder()
+                .setContext(this)
+                .setTheme(R.style.RegisteringProgressDialog)
+                .build();
+        mProgressDialog.show();
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill all the credentials =)",
                     Toast.LENGTH_SHORT).show();
         }
-
-        mProgressDialog.setMessage("Registering user...");
-        mProgressDialog.show();
 
         mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

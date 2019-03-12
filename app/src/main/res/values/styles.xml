@@ -15,4 +15,11 @@
         <item name="DialogSpotCount">4</item>
     </style>
 
+    <style name="RegisteringProgressDialog" parent="android:Theme.DeviceDefault.Light.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="DialogTitleText">Registering…</item>
+        <item name="DialogSpotColor">@color/colorAccent</item>
+        <item name="DialogSpotCount">4</item>
+    </style>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.hrapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hrapp.models.Language;
 import com.example.hrapp.models.Position;
 import com.example.hrapp.models.Question;
 import com.google.firebase.database.DataSnapshot;
@@ -23,11 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddQuestionActivity extends AppCompatActivity {
 
     private DatabaseReference mQuestionsDatabaseReference;
     private DatabaseReference mPositionsDatabaseReference;
+    private DatabaseReference mLanguagesDatabaseReference;
 
     private Spinner mPositionSpinner;
     private Spinner mLevelSpinner;
@@ -44,21 +51,42 @@ public class AddQuestionActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> mLevelsAdapter;
     private ArrayAdapter<String> mPositionsAdapter;
 
+    private CheckBox mJavascript;
+    private CheckBox mCsharp;
+    private CheckBox mJava;
+    private CheckBox mSql;
+    private CheckBox mPython;
+    private List<Language> mLanguages;
+    private int mLanguagesCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
 
+        mJavascript = (CheckBox) findViewById(R.id.check_javascript);
+        mCsharp = (CheckBox) findViewById(R.id.check_csharp);
+        mJava = (CheckBox) findViewById(R.id.check_java);
+        mSql = (CheckBox) findViewById(R.id.check_sql);
+        mPython = (CheckBox) findViewById(R.id.check_python);
+        mLanguages = new ArrayList<Language>();
+        mLanguagesCount = 0;
+        mJavascript.setOnCheckedChangeListener(checkedListener);
+        mCsharp.setOnCheckedChangeListener(checkedListener);
+        mJava.setOnCheckedChangeListener(checkedListener);
+        mSql.setOnCheckedChangeListener(checkedListener);
+        mPython.setOnCheckedChangeListener(checkedListener);
+
         mPositionSpinner = (Spinner) findViewById(R.id.position_spinner);
         mLevelSpinner = (Spinner) findViewById(R.id.level_spinner);
         mSaveButton = (Button) findViewById(R.id.save_question);
         mQuestionText = (EditText) findViewById(R.id.question_to_add);
         mAnswerText = (EditText) findViewById(R.id.answer_to_add);
-        mQuestionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Questions");
-        mPositionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Positions");
         mPositions = new ArrayList<>();
 
+        mQuestionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Questions");
+        mPositionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Positions");
 
         mPositionsDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,8 +140,16 @@ public class AddQuestionActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "Please, fill all the credits =)",
                         Toast.LENGTH_SHORT).show();
             } else {
-                mQuestionsDatabaseReference.child(Integer.toString(mCount)).setValue(
+                String qId = Integer.toString(mCount);
+                mQuestionsDatabaseReference.child(qId).setValue(
                         new Question(mCount, mQuestion, mAnswer, mLevel, mPosition));
+                mLanguagesDatabaseReference = mQuestionsDatabaseReference.child(qId)
+                        .child("languages");
+                for (Language language : mLanguages) {
+                    String lId = Integer.toString(language.getId());
+                    mLanguagesDatabaseReference.child(lId).setValue(
+                            new Language(language.getId(), language.getTitle()));
+                }
                 finish();
                 Toast.makeText(v.getContext(), "Saved", Toast.LENGTH_SHORT).show();
             }
@@ -137,6 +173,17 @@ public class AddQuestionActivity extends AppCompatActivity {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
+        }
+    };
+
+    CompoundButton.OnCheckedChangeListener checkedListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                mLanguagesCount++;
+                Language l = new Language(mLanguagesCount, buttonView.getText().toString());
+                mLanguages.add(l);
+            }
         }
     };
 }

@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
         android:text="Level"/>
 
@@ -33,7 +33,51 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        style="?android:listSeparatorTextViewStyle"
+        android:text="Languages:" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/check_javascript"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Javascript"/>
+
+        <CheckBox
+            android:id="@+id/check_csharp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C#"/>
+
+        <CheckBox
+            android:id="@+id/check_java"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java"/>
+
+        <CheckBox
+            android:id="@+id/check_sql"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SQL"/>
+
+        <CheckBox
+            android:id="@+id/check_python"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Python"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
         android:text="Question" />
 
@@ -45,7 +89,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
         android:text="Answer" />
 

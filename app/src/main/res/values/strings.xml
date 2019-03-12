@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HRApp</string>
+    <string name="app_name">HRocket</string>
     <string name="greeting">Welcome, dear HR specialist. Please, choose the position of employee to interview.</string>
     <string-array name="levels">
         <item>Junior</item>

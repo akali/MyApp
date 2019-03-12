@@ -1,7 +1,6 @@
 package com.example.hrapp;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -46,8 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         mUserTextPassword = (EditText) findViewById(R.id.user_login_password);
         mUserLoginButton = (Button) findViewById(R.id.user_login_button);
         mUserTextSignUp = (TextView) findViewById(R.id.user_login_registration);
-
-        mProgressDialog = new ProgressDialog(this);
 
         mUserLoginButton.setOnClickListener(listener);
         mUserTextSignUp.setOnClickListener(listener);
