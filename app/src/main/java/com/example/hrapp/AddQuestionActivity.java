@@ -38,6 +38,8 @@ public class AddQuestionActivity extends AppCompatActivity {
     private int mCount;
     private String mLevel;
     private String mPosition;
+    private String mQuestion;
+    private String mAnswer;
     private ArrayList<String> mPositions;
     private ArrayAdapter<CharSequence> mLevelsAdapter;
     private ArrayAdapter<String> mPositionsAdapter;
@@ -56,6 +58,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         mQuestionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Questions");
         mPositionsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Positions");
         mPositions = new ArrayList<>();
+
 
         mPositionsDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,12 +106,17 @@ public class AddQuestionActivity extends AppCompatActivity {
     View.OnClickListener saveListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ;
-            mQuestionsDatabaseReference.child(Integer.toString(mCount)).setValue(new Question(mCount,
-                    mQuestionText.getText().toString(), mAnswerText.getText().toString(),
-                    mLevel, mPosition));
-            finish();
-            Toast.makeText(v.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            mQuestion = mQuestionText.getText().toString();
+            mAnswer = mAnswerText.getText().toString();
+            if (mQuestion.isEmpty() || mAnswer.isEmpty()) {
+                Toast.makeText(v.getContext(), "Please, fill all the credits =)",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                mQuestionsDatabaseReference.child(Integer.toString(mCount)).setValue(
+                        new Question(mCount, mQuestion, mAnswer, mLevel, mPosition));
+                finish();
+                Toast.makeText(v.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
