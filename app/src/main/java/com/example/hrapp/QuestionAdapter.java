@@ -119,7 +119,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             mFavoriteButton.setOnClickListener(this);
             mLevelText = itemView.findViewById(R.id.question_level);
             mListener = listener;
-            itemView.setOnClickListener(this);
+            mQuestionText.setOnClickListener(this);
         }
 
         public void bind(Question question, List<Favorite> favorites) {

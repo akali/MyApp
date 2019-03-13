@@ -1,8 +1,9 @@
 package com.example.hrapp.models;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Question {
+public class Question implements Parcelable {
 
     private int mId;
 
@@ -24,6 +25,26 @@ public class Question {
 
     public Question() {
     }
+
+    protected Question(Parcel in) {
+        mId = in.readInt();
+        mQuestion = in.readString();
+        mAnswer = in.readString();
+        mLevel = in.readString();
+        mPosition = in.readString();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 
     public int getId() {
         return mId;
@@ -65,4 +86,17 @@ public class Question {
         mPosition = position;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mQuestion);
+        dest.writeString(mAnswer);
+        dest.writeString(mLevel);
+        dest.writeString(mPosition);
+    }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,56 +7,104 @@
     android:orientation="vertical"
     tools:context=".QuestionDetailsActivity">
 
-    <TextView
-        android:id="@+id/details_position"
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/comment_send_layout"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/scroll_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/details_position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:text="Position"/>
+
+            <TextView
+                android:id="@+id/details_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/details_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/details_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Comments:"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:id="@+id/comments_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/comment_send_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:text="Position"/>
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
-    <TextView
-        android:id="@+id/details_level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:text="Level"/>
+        <EditText
+            android:id="@+id/comment_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="top|left"
+            android:paddingLeft="10dp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="5"
+            android:minLines="3"
+            android:scrollHorizontally="false"
+            android:hint="Comment"/>
 
-    <TextView
-        android:id="@+id/details_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:text="Question"/>
-
-    <TextView
-        android:id="@+id/details_answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:text="Comments:"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
-        android:id="@+id/comments_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
+        <ImageButton
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="10dp"
+            android:gravity="center"
+            android:background="#00ffffff"
+            android:src="@drawable/ic_send_24dp"/>
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -151,8 +151,9 @@ public class QuestionListActivity extends AppCompatActivity {
     RecyclerViewClickListener listener = new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, int position) {
-            Toast.makeText(view.getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(view.getContext(), QuestionDetailsActivity.class);
+            Question question = mQuestionList.get(position);
+            intent.putExtra("questionDetails", question);
             startActivity(intent);
         }
     };
