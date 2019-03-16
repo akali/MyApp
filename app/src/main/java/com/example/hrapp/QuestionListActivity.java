@@ -31,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionListActivity extends AppCompatActivity {
 
@@ -49,6 +51,18 @@ public class QuestionListActivity extends AppCompatActivity {
     private Button mFilterMiddle;
     private Button mFilterSenior;
     private ImageView mFilterImage;
+
+    private static final Map<Integer, String> buttonTextColorMap = new HashMap<Integer, String>(){{
+        put(R.id.filter_junior, "#FF515E");
+        put(R.id.filter_middle, "#FF8E09");
+        put(R.id.filter_senior, "#00D053");
+    }};
+
+    private static final Map<Integer, Integer> buttonBackgrounMap = new HashMap<Integer, Integer>(){{
+        put(R.id.filter_junior, R.drawable.button_red_rounded);
+        put(R.id.filter_middle, R.drawable.button_yellow_rounded);
+        put(R.id.filter_senior, R.drawable.button_green_rounded);
+    }};
 
     private String mPositionName;
 
@@ -90,10 +104,11 @@ public class QuestionListActivity extends AppCompatActivity {
             }
         });
 
-        mFilterJunior = (Button) findViewById(R.id.filter_junior);
-        mFilterMiddle = (Button) findViewById(R.id.filter_middle);
-        mFilterSenior = (Button) findViewById(R.id.filter_senior);
-        mFilterImage = (ImageView) findViewById(R.id.filter_image);
+        mFilterJunior = findViewById(R.id.filter_junior);
+        mFilterMiddle = findViewById(R.id.filter_middle);
+        mFilterSenior = findViewById(R.id.filter_senior);
+        mFilterImage = findViewById(R.id.filter_image);
+
         mFilterImage.setOnClickListener(levelsFilterListener);
         mFilterJunior.setOnClickListener(levelsFilterListener);
         mFilterMiddle.setOnClickListener(levelsFilterListener);
@@ -101,51 +116,60 @@ public class QuestionListActivity extends AppCompatActivity {
 
         initFavoriteList();
         initQuestionList();
+    }
 
+    void setEnabled(Button b, boolean enabled) {
+        if (enabled) {
+            b.setTextColor(Color.parseColor(buttonTextColorMap.get(b.getId())));
+            b.setBackgroundResource(buttonBackgrounMap.get(b.getId()));
+        } else {
+            b.setBackgroundResource(R.drawable.button_default_rounded);
+            b.setTextColor(Color.parseColor("#000000"));
+        }
     }
 
     View.OnClickListener levelsFilterListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button junButton = (Button) findViewById(R.id.filter_junior);
-            Button midButton = (Button) findViewById(R.id.filter_middle);
-            Button senButton = (Button) findViewById(R.id.filter_senior);
+            Button junButton = findViewById(R.id.filter_junior);
+            Button midButton = findViewById(R.id.filter_middle);
+            Button senButton = findViewById(R.id.filter_senior);
             String levelName = "";
+
             switch (v.getId()) {
                 case R.id.filter_junior:
-                    levelName = ((Button)v).getText().toString();
-                    v.setBackgroundResource(R.drawable.button_red_rounded);
-                    ((Button)v).setTextColor(Color.parseColor("#FF515E"));
-                    midButton.setEnabled(false);
-                    senButton.setEnabled(false);
+                    Button button = (Button) v;
+                    levelName = button.getText().toString();
+
+                    setEnabled(button, true);
+                    setEnabled(midButton, false);
+                    setEnabled(senButton, false);
+
                     filterQuestionsByLevel(levelName);
                     break;
                 case R.id.filter_middle:
                     levelName = ((Button)v).getText().toString();
-                    v.setBackgroundResource(R.drawable.button_yellow_rounded);
-                    ((Button)v).setTextColor(Color.parseColor("#FF8E09"));
-                    junButton.setEnabled(false);
-                    senButton.setEnabled(false);
+
+                    setEnabled((Button) v, true);
+                    setEnabled(junButton, false);
+                    setEnabled(senButton, false);
+
                     filterQuestionsByLevel(levelName);
                     break;
                 case R.id.filter_senior:
                     levelName = ((Button)v).getText().toString();
-                    v.setBackgroundResource(R.drawable.button_green_rounded);
-                    ((Button)v).setTextColor(Color.parseColor("#00D053"));
-                    junButton.setEnabled(false);
-                    midButton.setEnabled(false);
+
+                    setEnabled((Button) v, true);
+                    setEnabled(junButton, false);
+                    setEnabled(midButton, false);
+
                     filterQuestionsByLevel(levelName);
                     break;
                 case R.id.filter_image:
-                    junButton.setEnabled(true);
-                    midButton.setEnabled(true);
-                    senButton.setEnabled(true);
-                    junButton.setBackgroundResource(R.drawable.button_default_rounded);
-                    midButton.setBackgroundResource(R.drawable.button_default_rounded);
-                    senButton.setBackgroundResource(R.drawable.button_default_rounded);
-                    ((Button)junButton).setTextColor(Color.parseColor("#383838"));
-                    ((Button)midButton).setTextColor(Color.parseColor("#383838"));
-                    ((Button)senButton).setTextColor(Color.parseColor("#383838"));
+                    setEnabled(junButton, false);
+                    setEnabled(midButton, false);
+                    setEnabled(senButton, false);
+
                     resetFilter();
                     break;
             }
@@ -160,7 +184,9 @@ public class QuestionListActivity extends AppCompatActivity {
     }
 
     private void filterQuestionsByLevel(String level) {
-        for (Question question : mQuestionList) {
+        mLevelFilteredQuestionList.clear();
+
+        for (Question question : mLevelNotFilteredQuestionList) {
             if (question.getLevel().equals(level)) {
                 mLevelFilteredQuestionList.add(question);
             }

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new FavoritesFragment();
                             break;
                         case R.id.nav_candidates:
-                            selectedFragment = new CandidateFragment();
+                            selectedFragment = CandidateFragment.newInstance();
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
