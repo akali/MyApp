@@ -1,16 +1,19 @@
 package com.example.hrapp;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.hrapp.models.Favorite;
 import com.example.hrapp.models.Question;
@@ -105,8 +108,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
         private TextView mQuestionText;
         private TextView mAnswerText;
-        private ImageButton mFavoriteButton;
-        private TextView mLevelText;
+        private ToggleButton mFavoriteButton;
+        private Button mLevelButton;
 
         private RecyclerViewClickListener mListener;
 
@@ -117,22 +120,32 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             mAnswerText = itemView.findViewById(R.id.question_answer);
             mFavoriteButton = itemView.findViewById(R.id.favorite_question);
             mFavoriteButton.setOnClickListener(this);
-            mLevelText = itemView.findViewById(R.id.question_level);
+            mLevelButton = itemView.findViewById(R.id.question_level_button);
             mListener = listener;
             mQuestionText.setOnClickListener(this);
+            mFavoriteButton.setOnClickListener(this);
         }
 
         public void bind(Question question, List<Favorite> favorites) {
             mQuestion = question;
             mQuestionText.setText(mQuestion.getQuestion());
             mAnswerText.setText(mQuestion.getAnswer());
-            mLevelText.setText(mQuestion.getLevel());
+            mLevelButton.setText(mQuestion.getLevel());
+            if (mLevelButton.getText().equals("Junior")) {
+                mLevelButton.setBackgroundResource(R.drawable.button_red_rounded);
+                mLevelButton.setTextColor(Color.parseColor("#FF515E"));
+            } else if (mLevelButton.getText().equals("Middle")) {
+                mLevelButton.setBackgroundResource(R.drawable.button_yellow_rounded);
+                mLevelButton.setTextColor(Color.parseColor("#FF8E09"));
+            } else if (mLevelButton.getText().equals("Senior")) {
+                mLevelButton.setBackgroundResource(R.drawable.button_green_rounded);
+                mLevelButton.setTextColor(Color.parseColor("#00D053"));
+            }
 
-            mFavoriteButton.setImageResource(R.drawable.ic_star_border_grey_24dp);
-
+            mFavoriteButton.setSelected(false);
             for (Favorite f : favorites) {
                 if (f.getQuestionId() == mQuestion.getId()) {
-                    mFavoriteButton.setImageResource(R.drawable.ic_star_yellow_24dp);
+                    mFavoriteButton.setSelected(true);
                 }
             }
         }

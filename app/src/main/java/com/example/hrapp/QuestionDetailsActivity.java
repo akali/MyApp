@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.hrapp.models.Comment;
+import com.example.hrapp.models.Favorite;
+import com.example.hrapp.models.Language;
 import com.example.hrapp.models.Position;
 import com.example.hrapp.models.Question;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +35,8 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseUser mUser;
     private DatabaseReference mCommentsDatabaseReference;
+    private DatabaseReference mQuestionsDatabaseReference;
+    private DatabaseReference mLanguagesDatabaseReference;
     private RecyclerView mRecyclerView;
     private List<Comment> mCommentList;
     private List<Comment> mCommentListFull;
@@ -43,9 +47,11 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     private TextView mQuestionLevelText;
     private TextView mQuestionQuestionText;
     private TextView mQuestionAnswerText;
+    private TextView mQuestionLanguagesText;
 
     private EditText mCommentText;
     private ImageButton mCommentSend;
+    private String mLanguages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         mQuestionLevelText = (TextView) findViewById(R.id.details_level);
         mQuestionQuestionText = (TextView) findViewById(R.id.details_question);
         mQuestionAnswerText = (TextView) findViewById(R.id.details_answer);
+        mQuestionLanguagesText = (TextView) findViewById(R.id.details_languages);
         mCommentText = (EditText) findViewById(R.id.comment_message);
         mCommentSend = (ImageButton) findViewById(R.id.send_button);
 
@@ -73,8 +80,12 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDatabase = FirebaseDatabase.getInstance();
         mCommentsDatabaseReference = mDatabase.getReference().child("Comments");
+        mQuestionsDatabaseReference = mDatabase.getReference().child("Questions");
+        mLanguagesDatabaseReference = mQuestionsDatabaseReference.child(Integer.toString(
+                mQuestionDetails.getId())).child("languages");
         mCommentList = new ArrayList<Comment>();
         mCommentListFull = new ArrayList<Comment>();
+        mLanguages = "";
 
 
         mCommentSend.setOnClickListener(sendListener);
@@ -87,6 +98,24 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         mQuestionLevelText.setText(mQuestionDetails.getLevel());
         mQuestionQuestionText.setText(mQuestionDetails.getQuestion());
         mQuestionAnswerText.setText(mQuestionDetails.getAnswer());
+
+        mLanguagesDatabaseReference.addValueEventListener(
+                new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Language language = dataSnapshot1.getValue(Language.class);
+                    mLanguages = mLanguages + language.getTitle() + " ";
+                }
+                mQuestionLanguagesText.setText(mLanguages);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("Hello", "Failed to read value.", databaseError.toException());
+            }
+        });
+
     }
 
     private void initCommentList() {

@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF4757"
     tools:context=".LoginActivity">
 
     <TextView
@@ -13,8 +14,9 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textSize="64sp"
+        android:textStyle="bold"
         android:layout_marginBottom="34dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@id/user_login_email"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -33,7 +35,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/app_title" />
+        app:layout_constraintTop_toBottomOf="@id/app_title"
+        android:textCursorDrawable="@null"
+        android:foregroundTint="#FFDFE4"
+        android:backgroundTint="#FFDFE4"
+        android:textColorHint="#FFDFE4"
+        android:textColor="#FFDFE4"/>
 
     <EditText
         android:id="@+id/user_login_password"
@@ -47,7 +54,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/user_login_email" />
+        app:layout_constraintTop_toBottomOf="@+id/user_login_email"
+        android:textCursorDrawable="@null"
+        android:foregroundTint="#FFDFE4"
+        android:backgroundTint="#FFDFE4"
+        android:textColorHint="#FFDFE4"
+        android:textColor="#FFDFE4"/>
 
 
     <Button
@@ -58,7 +70,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button_login_red"
+        android:textColor="#FF515E"
         app:layout_constraintBottom_toTopOf="@id/user_login_registration"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -72,12 +85,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textSize="20sp"
-        android:textStyle="bold"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/user_login_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Don't have an account? Sign up!"/>
+        android:text="Don't have an account? Sign up!"
+        android:textColor="#FFDFE4"/>
 
 </android.support.constraint.ConstraintLayout>
