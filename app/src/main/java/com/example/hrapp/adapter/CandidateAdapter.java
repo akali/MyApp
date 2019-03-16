@@ -31,7 +31,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-
+    viewHolder.bind(candidates.get(position));
   }
 
   @Override
@@ -50,6 +50,12 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
       nameTextView = itemView.findViewById(R.id.name_text_view);
       bioTextView = itemView.findViewById(R.id.bio_text_view);
       levelButton = itemView.findViewById(R.id.level_button);
+    }
+
+    public void bind(Candidate candidate) {
+      nameTextView.setText(candidate.getDisplayName());
+      bioTextView.setText(candidate.getBio());
+      levelButton.setText(candidate.getLevel());
     }
   }
 }
