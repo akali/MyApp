@@ -64,6 +64,10 @@ public class CandidateQAdapter extends RecyclerView.Adapter<CandidateQAdapter.Ca
     return result;
   }
 
+  public double calculateAverage() {
+    return 1.0 * calculateScore() / this.scores.size();
+  }
+
 
   class CandidateQViewHolder extends RecyclerView.ViewHolder {
 

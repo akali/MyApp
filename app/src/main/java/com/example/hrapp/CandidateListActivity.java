@@ -54,7 +54,9 @@ public class CandidateListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int score = mAdapter.calculateScore();
+                double average = mAdapter.calculateAverage();
                 Toast.makeText(CandidateListActivity.this, "Your score is: " + score, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CandidateListActivity.this, "Your averageis: " + average, Toast.LENGTH_SHORT).show();
             }
         });
     }
