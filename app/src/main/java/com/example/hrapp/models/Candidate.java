@@ -15,12 +15,15 @@ public class Candidate implements Parcelable {
 
     private String mLevel;
 
-    public Candidate(int id, String name, String email, String position, String level) {
+    private Double mScore;
+
+    public Candidate(int id, String name, String email, String position, String level, Double score) {
         mId = id;
         mName = name;
         mEmail = email;
         mPosition = position;
         mLevel = level;
+        mScore = score;
     }
 
     public Candidate() {
@@ -32,6 +35,7 @@ public class Candidate implements Parcelable {
         mEmail = in.readString();
         mLevel = in.readString();
         mPosition = in.readString();
+        mScore = in.readDouble();
     }
 
     public static final Parcelable.Creator<Candidate> CREATOR = new Parcelable.Creator<Candidate>() {
@@ -86,6 +90,14 @@ public class Candidate implements Parcelable {
         mLevel = level;
     }
 
+    public Double getScore() {
+        return mScore;
+    }
+
+    public void setScore(Double score) {
+        mScore = score;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -98,6 +110,7 @@ public class Candidate implements Parcelable {
         dest.writeString(mEmail);
         dest.writeString(mLevel);
         dest.writeString(mPosition);
+        dest.writeDouble(mScore);
     }
 
 /*private Position position;

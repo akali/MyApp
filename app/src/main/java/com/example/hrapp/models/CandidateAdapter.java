@@ -55,6 +55,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
         private TextView mCandidatePosition;
         private TextView mCandidateLevel;
         private Button mCandidateGenerateList;
+        private TextView mCandidateScore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +67,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
             mCandidatePosition = itemView.findViewById(R.id.candidate_position);
             mCandidateLevel = itemView.findViewById(R.id.candidate_level);
             mCandidateGenerateList = itemView.findViewById(R.id.candidate_generate_button);
+            mCandidateScore = itemView.findViewById(R.id.candidate_score);
         }
 
         public void bind(Candidate candidate) {
@@ -91,6 +93,11 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
                     mContext.startActivity(intent);
                 }
             });
+            if (mCandidate.getScore() != 0) {
+                mCandidateScore.setVisibility(View.VISIBLE);
+                mCandidateScore.setText("Score: " + mCandidate.getScore());
+                mCandidateGenerateList.setEnabled(false);
+            }
         }
     }
 }

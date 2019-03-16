@@ -29,6 +29,7 @@ public class CandidateListActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mQuestionsDatabaseReference;
+    private DatabaseReference mCandidatesDatabaseReference;
     private Candidate mCandidateDetails;
     private List<Question> mQuestionListForCandidate;
     private RecyclerView mRecyclerView;
@@ -47,6 +48,7 @@ public class CandidateListActivity extends AppCompatActivity {
         mCandidateDetails = intent.getParcelableExtra("candidateDetails");
         mDatabase = FirebaseDatabase.getInstance();
         mQuestionsDatabaseReference = mDatabase.getReference().child("Questions");
+        mCandidatesDatabaseReference = mDatabase.getReference().child("Candidates");
         mQuestionListForCandidate = new ArrayList<Question>();
 
         initQuestionListForCandidate();
@@ -55,8 +57,13 @@ public class CandidateListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int score = mAdapter.calculateScore();
                 double average = mAdapter.calculateAverage();
-                Toast.makeText(CandidateListActivity.this, "Your score is: " + score, Toast.LENGTH_SHORT).show();
-                Toast.makeText(CandidateListActivity.this, "Your averageis: " + average, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CandidateListActivity.this, "Your score is: " + score, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CandidateListActivity.this, "Your average is: " + average, Toast.LENGTH_SHORT).show();
+                mCandidatesDatabaseReference.child(String.valueOf(mCandidateDetails.getId())).setValue(
+                        new Candidate(mCandidateDetails.getId(), mCandidateDetails.getName(), mCandidateDetails.getEmail(),
+                                mCandidateDetails.getPosition(), mCandidateDetails.getLevel(), average)
+                );
+                finish();
             }
         });
     }

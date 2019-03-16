@@ -74,6 +74,15 @@
                     android:minHeight="1dp"
                     android:background="@drawable/button_position_details"
                     android:text="Details"/>
+
+                <TextView
+                    android:id="@+id/candidate_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="40dp"
+                    android:textColor="#383838"
+                    android:visibility="gone"/>
                 </LinearLayout>
             </LinearLayout>
         <TextView
