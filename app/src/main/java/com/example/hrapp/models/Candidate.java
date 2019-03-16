@@ -1,6 +1,9 @@
 package com.example.hrapp.models;
 
-public class Candidate {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Candidate implements Parcelable {
 
     private int mId;
 
@@ -8,14 +11,40 @@ public class Candidate {
 
     private String mEmail;
 
-    public Candidate(int id, String name, String email) {
+    private String mPosition;
+
+    private String mLevel;
+
+    public Candidate(int id, String name, String email, String position, String level) {
         mId = id;
         mName = name;
         mEmail = email;
+        mPosition = position;
+        mLevel = level;
     }
 
     public Candidate() {
     }
+
+    protected Candidate(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+        mEmail = in.readString();
+        mLevel = in.readString();
+        mPosition = in.readString();
+    }
+
+    public static final Parcelable.Creator<Candidate> CREATOR = new Parcelable.Creator<Candidate>() {
+        @Override
+        public Candidate createFromParcel(Parcel in) {
+            return new Candidate(in);
+        }
+
+        @Override
+        public Candidate[] newArray(int size) {
+            return new Candidate[size];
+        }
+    };
 
     public int getId() {
         return mId;
@@ -41,7 +70,37 @@ public class Candidate {
         mEmail = email;
     }
 
-    /*private Position position;
+    public String getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(String position) {
+        mPosition = position;
+    }
+
+    public String getLevel() {
+        return mLevel;
+    }
+
+    public void setLevel(String level) {
+        mLevel = level;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mName);
+        dest.writeString(mEmail);
+        dest.writeString(mLevel);
+        dest.writeString(mPosition);
+    }
+
+/*private Position position;
     private String level;
     private String bio;
 
