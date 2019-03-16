@@ -1,6 +1,7 @@
 package com.example.hrapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,8 +44,8 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     private CommentAdapter mCommentAdapter;
 
     private Question mQuestionDetails;
-    private TextView mQuestionPositionText;
-    private TextView mQuestionLevelText;
+    private Button mQuestionPositionText;
+    private Button mQuestionLevelText;
     private TextView mQuestionQuestionText;
     private TextView mQuestionAnswerText;
     private TextView mQuestionLanguagesText;
@@ -68,8 +69,8 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mQuestionDetails = intent.getParcelableExtra("questionDetails");
-        mQuestionPositionText = (TextView) findViewById(R.id.details_position);
-        mQuestionLevelText = (TextView) findViewById(R.id.details_level);
+        mQuestionPositionText = (Button) findViewById(R.id.details_position);
+        mQuestionLevelText = (Button) findViewById(R.id.details_level);
         mQuestionQuestionText = (TextView) findViewById(R.id.details_question);
         mQuestionAnswerText = (TextView) findViewById(R.id.details_answer);
         mQuestionLanguagesText = (TextView) findViewById(R.id.details_languages);
@@ -115,6 +116,21 @@ public class QuestionDetailsActivity extends AppCompatActivity {
                 Log.w("Hello", "Failed to read value.", databaseError.toException());
             }
         });
+
+        switch (mQuestionDetails.getLevel()) {
+            case "Junior":
+                mQuestionLevelText.setBackgroundResource(R.drawable.button_red_rounded);
+                mQuestionLevelText.setTextColor(Color.parseColor("#FF515E"));
+                break;
+            case "Middle":
+                mQuestionLevelText.setBackgroundResource(R.drawable.button_yellow_rounded);
+                mQuestionLevelText.setTextColor(Color.parseColor("#FF8E09"));
+                break;
+            case "Senior":
+                mQuestionLevelText.setBackgroundResource(R.drawable.button_green_rounded);
+                mQuestionLevelText.setTextColor(Color.parseColor("#00D053"));
+                break;
+        }
 
     }
 

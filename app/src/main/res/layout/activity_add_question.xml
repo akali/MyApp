@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?android:listSeparatorTextViewStyle"
+        android:textColor="#FF4757"
         android:text="Position"/>
 
     <Spinner
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
+        android:textColor="#FF4757"
         android:text="Level"/>
 
     <Spinner
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
+        android:textColor="#FF4757"
         android:text="Languages:" />
 
     <LinearLayout
@@ -46,30 +49,40 @@
             android:id="@+id/check_javascript"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#383838"
+            android:buttonTint="#FF4757"
             android:text="Javascript"/>
 
         <CheckBox
             android:id="@+id/check_csharp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#383838"
+            android:buttonTint="#FF4757"
             android:text="C#"/>
 
         <CheckBox
             android:id="@+id/check_java"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#383838"
+            android:buttonTint="#FF4757"
             android:text="Java"/>
 
         <CheckBox
             android:id="@+id/check_sql"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#383838"
+            android:buttonTint="#FF4757"
             android:text="SQL"/>
 
         <CheckBox
             android:id="@+id/check_python"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#383838"
+            android:buttonTint="#FF4757"
             android:text="Python"/>
 
     </LinearLayout>
@@ -79,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
+        android:textColor="#FF4757"
         android:text="Question" />
 
     <EditText
@@ -91,6 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         style="?android:listSeparatorTextViewStyle"
+        android:textColor="#FF4757"
         android:text="Answer" />
 
     <EditText
@@ -103,6 +118,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_save_color"
         android:text="Save"/>
 
 </LinearLayout>

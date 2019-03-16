@@ -14,9 +14,9 @@
             android:id="@+id/comment_user_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#383838"
             android:text="anna@mail.ru"/>
 
         <TextView
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@android:color/black"
             android:text="Something good"/>
 

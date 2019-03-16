@@ -3,6 +3,7 @@ package com.example.hrapp;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 import com.example.hrapp.models.Position;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +32,8 @@ public class MainFragment extends Fragment {
     private List<Position> mPositionList;
     private PositionAdapter mPositionAdapter;
 
+    private ViewFlipper mViewFlipper;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -37,6 +42,15 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        int images[] = {R.drawable.slide1, R.drawable.slide2, R.drawable.slide3};
+        mViewFlipper = (ViewFlipper) view.findViewById(R.id.image_flipper);
+
+        for (int image : images) {
+            flipperImages(image);
+        }
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.positions_recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -63,6 +77,19 @@ public class MainFragment extends Fragment {
 
         return view;
 
+    }
+
+
+    private void flipperImages(int image) {
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setBackgroundResource(image);
+
+        mViewFlipper.addView(imageView);
+        mViewFlipper.setFlipInterval(3000);
+        mViewFlipper.setAutoStart(true);
+
+        mViewFlipper.setInAnimation(getActivity(), android.R.anim.slide_in_left);
+        mViewFlipper.setOutAnimation(getActivity(), android.R.anim.slide_out_right);
     }
 
 }
