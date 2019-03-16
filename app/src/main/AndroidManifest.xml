@@ -15,6 +15,7 @@
         <activity
             android:name=".RegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CandidateListActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".AddQuestionActivity" />
         <activity android:name=".QuestionListActivity" />

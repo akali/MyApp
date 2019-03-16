@@ -80,7 +80,7 @@ public class CandidateFragment extends Fragment {
                     Candidate value = dataSnapshot1.getValue(Candidate.class);
                     mCandidateList.add(value);
                 }
-                mAdapter = new CandidateAdapter(mCandidateList);
+                mAdapter = new CandidateAdapter(mCandidateList, getContext());
                 mRecyclerView.setAdapter(mAdapter);
             }
 
