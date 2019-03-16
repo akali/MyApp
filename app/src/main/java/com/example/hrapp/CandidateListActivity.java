@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.hrapp.models.Candidate;
 import com.example.hrapp.models.Question;
@@ -52,7 +53,8 @@ public class CandidateListActivity extends AppCompatActivity {
         mResultScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int score = mAdapter.calculateScore();
+                Toast.makeText(CandidateListActivity.this, "Your score is: " + score, Toast.LENGTH_SHORT).show();
             }
         });
     }

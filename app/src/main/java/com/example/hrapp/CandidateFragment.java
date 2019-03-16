@@ -97,20 +97,5 @@ public class CandidateFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.candidates_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        List<Candidate> candidates = Arrays.asList(new Candidate
-          (1,
-            "Pavel Durov",
-            Arrays.asList(
-              new Language(1, "C#"),
-              new Language(2, "Java")
-            ),
-            new Position(1, "Database Specialist"),
-            "Junior",
-            "25 y.o. designer from Australia"
-          )
-        );
-
-        recyclerView.setAdapter(new CandidateAdapter(candidates));
     }
 }
