@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hrapp.models.Position;
@@ -47,17 +48,34 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.Positi
 
         private TextView mPositionTextName;
         private Position mPosition;
+        private ImageView mPositionImage;
 
         public PositionViewHolder(@NonNull View itemView) {
             super(itemView);
 
             itemView.setOnClickListener(this);
-            mPositionTextName = itemView.findViewById(R.id.posiotion_name);
+            mPositionTextName = itemView.findViewById(R.id.position_name);
+            mPositionImage = itemView.findViewById(R.id.position_image);
         }
 
         public void bind(Position position) {
             mPosition = position;
             mPositionTextName.setText(mPosition.getName());
+            switch (position.getId()) {
+                case 1:
+                    mPositionImage.setImageResource(R.drawable.ic_personal_video_24dp);
+                    break;
+                case 2:
+                    mPositionImage.setImageResource(R.drawable.ic_phone_android_24dp);
+                    break;
+                case 3:
+                    mPositionImage.setImageResource(R.drawable.ic_web_24dp);
+                    break;
+                case 4:
+                    mPositionImage.setImageResource(R.drawable.ic_data_usage_24dp);
+                    break;
+            }
+
         }
 
         @Override

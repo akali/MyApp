@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.hrapp.models.Favorite;
@@ -47,8 +48,12 @@ public class QuestionListActivity extends AppCompatActivity {
     private Button mFilterJunior;
     private Button mFilterMiddle;
     private Button mFilterSenior;
+    private ImageView mFilterImage;
 
     private String mPositionName;
+
+    private List<Question> mLevelFilteredQuestionList;
+    private List<Question> mLevelNotFilteredQuestionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,10 @@ public class QuestionListActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mQuestionsDatabaseReference = mDatabase.getReference().child("Questions");
         mFavoritesDatabaseReference = mDatabase.getReference().child("Favorites");
+        mLevelFilteredQuestionList = new ArrayList<Question>();
+        mLevelNotFilteredQuestionList = new ArrayList<Question>();
+        mQuestionList = new ArrayList<Question>();
+        mFavoriteList = new ArrayList<Favorite>();
 
         mAddQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +93,8 @@ public class QuestionListActivity extends AppCompatActivity {
         mFilterJunior = (Button) findViewById(R.id.filter_junior);
         mFilterMiddle = (Button) findViewById(R.id.filter_middle);
         mFilterSenior = (Button) findViewById(R.id.filter_senior);
+        mFilterImage = (ImageView) findViewById(R.id.filter_image);
+        mFilterImage.setOnClickListener(levelsFilterListener);
         mFilterJunior.setOnClickListener(levelsFilterListener);
         mFilterMiddle.setOnClickListener(levelsFilterListener);
         mFilterSenior.setOnClickListener(levelsFilterListener);
@@ -96,28 +107,70 @@ public class QuestionListActivity extends AppCompatActivity {
     View.OnClickListener levelsFilterListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Button junButton = (Button) findViewById(R.id.filter_junior);
+            Button midButton = (Button) findViewById(R.id.filter_middle);
+            Button senButton = (Button) findViewById(R.id.filter_senior);
+            String levelName = "";
             switch (v.getId()) {
                 case R.id.filter_junior:
-                    Toast.makeText(getApplicationContext(), "Junior", Toast.LENGTH_SHORT).show();
+                    levelName = ((Button)v).getText().toString();
                     v.setBackgroundResource(R.drawable.button_red_rounded);
                     ((Button)v).setTextColor(Color.parseColor("#FF515E"));
+                    midButton.setEnabled(false);
+                    senButton.setEnabled(false);
+                    filterQuestionsByLevel(levelName);
                     break;
                 case R.id.filter_middle:
-                    Toast.makeText(getApplicationContext(), "Middle", Toast.LENGTH_SHORT).show();
+                    levelName = ((Button)v).getText().toString();
                     v.setBackgroundResource(R.drawable.button_yellow_rounded);
                     ((Button)v).setTextColor(Color.parseColor("#FF8E09"));
+                    junButton.setEnabled(false);
+                    senButton.setEnabled(false);
+                    filterQuestionsByLevel(levelName);
                     break;
                 case R.id.filter_senior:
-                    Toast.makeText(getApplicationContext(), "Senior", Toast.LENGTH_SHORT).show();
+                    levelName = ((Button)v).getText().toString();
                     v.setBackgroundResource(R.drawable.button_green_rounded);
                     ((Button)v).setTextColor(Color.parseColor("#00D053"));
+                    junButton.setEnabled(false);
+                    midButton.setEnabled(false);
+                    filterQuestionsByLevel(levelName);
+                    break;
+                case R.id.filter_image:
+                    junButton.setEnabled(true);
+                    midButton.setEnabled(true);
+                    senButton.setEnabled(true);
+                    junButton.setBackgroundResource(R.drawable.button_default_rounded);
+                    midButton.setBackgroundResource(R.drawable.button_default_rounded);
+                    senButton.setBackgroundResource(R.drawable.button_default_rounded);
+                    ((Button)junButton).setTextColor(Color.parseColor("#383838"));
+                    ((Button)midButton).setTextColor(Color.parseColor("#383838"));
+                    ((Button)senButton).setTextColor(Color.parseColor("#383838"));
+                    resetFilter();
                     break;
             }
         }
     };
 
+    private void resetFilter() {
+        mLevelFilteredQuestionList.clear();
+        mQuestionList.clear();
+        mQuestionList.addAll(mLevelNotFilteredQuestionList);
+        mQuestionAdapter.notifyDataSetChanged();
+    }
+
+    private void filterQuestionsByLevel(String level) {
+        for (Question question : mQuestionList) {
+            if (question.getLevel().equals(level)) {
+                mLevelFilteredQuestionList.add(question);
+            }
+        }
+        mQuestionList.clear();
+        mQuestionList.addAll(mLevelFilteredQuestionList);
+        mQuestionAdapter.notifyDataSetChanged();
+    }
+
     private void initQuestionList() {
-        mQuestionList = new ArrayList<Question>();
         mQuestionsDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -125,6 +178,7 @@ public class QuestionListActivity extends AppCompatActivity {
                     Question value = dataSnapshot1.getValue(Question.class);
                     if (value.getPosition().equals(mPositionName)) {
                         mQuestionList.add(value);
+                        mLevelNotFilteredQuestionList.add(value);
                     }
                 }
                 mQuestionAdapter = new QuestionAdapter(mQuestionList, listener);
@@ -140,7 +194,6 @@ public class QuestionListActivity extends AppCompatActivity {
     }
 
     private void initFavoriteList() {
-        mFavoriteList = new ArrayList<Favorite>();
         mFavoritesDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

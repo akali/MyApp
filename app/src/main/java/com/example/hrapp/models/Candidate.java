@@ -14,6 +14,34 @@ public class Candidate implements Parcelable {
   private String level;
   private String bio;
 
+  private int mId;
+
+  private String mName;
+
+  private String mEmail;
+
+  public String getName() {
+    return mName;
+  }
+
+  public void setName(String name) {
+    mName = name;
+  }
+
+  public String getEmail() {
+    return mEmail;
+  }
+
+  public void setEmail(String email) {
+    mEmail = email;
+  }
+
+  public Candidate(int id, String name, String email) {
+    mId = id;
+    mName = name;
+    mEmail = email;
+  }
+
   public Candidate(int id,
                    String displayName,
                    List<Language> languages,
