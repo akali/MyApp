@@ -1,6 +1,7 @@
 package com.example.hrapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,11 +21,15 @@ import com.example.hrapp.models.Position;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CandidateFragment extends Fragment {
+
+    private static final int CREATE_CANDIDATE_REQUEST_CODE = 101;
 
     public CandidateFragment() {
         // Required empty public constructor
@@ -77,6 +82,16 @@ public class CandidateFragment extends Fragment {
     }
 
     private void onAddClick() {
+        Intent intent = new Intent(getContext(), CreateCandidateActivity.class);
+        startActivityForResult(intent, CREATE_CANDIDATE_REQUEST_CODE);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CREATE_CANDIDATE_REQUEST_CODE && resultCode == RESULT_OK) {
+
+        }
     }
 }

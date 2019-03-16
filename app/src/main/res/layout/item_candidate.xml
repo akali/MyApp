@@ -27,7 +27,7 @@
             android:text="Pavel Drurov" />
 
         <TextView
-            android:id="@+id/bio_text_view"
+            android:id="@+id/bio_edit_text"
             android:text="some background"
             android:lines="3"
             android:layout_width="wrap_content"

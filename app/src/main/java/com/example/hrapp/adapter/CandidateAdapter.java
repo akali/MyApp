@@ -48,7 +48,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
       super(itemView);
 
       nameTextView = itemView.findViewById(R.id.name_text_view);
-      bioTextView = itemView.findViewById(R.id.bio_text_view);
+      bioTextView = itemView.findViewById(R.id.bio_edit_text);
       levelButton = itemView.findViewById(R.id.level_button);
     }
 

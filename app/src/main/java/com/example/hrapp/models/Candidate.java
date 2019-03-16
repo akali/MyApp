@@ -49,6 +49,10 @@ public class Candidate implements Parcelable {
     }
   };
 
+  public Candidate() {
+
+  }
+
   @Override
   public String toString() {
     return "Candidate{" +
