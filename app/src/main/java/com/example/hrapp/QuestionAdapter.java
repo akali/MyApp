@@ -30,7 +30,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     private List<Favorite> mFavoriteList;
 
-    private RecyclerViewClickListener mListener;
+    private RecyclerViewClickItemListener<Question> mListener;
 
     public List<Favorite> getFavoriteList() {
         return mFavoriteList;
@@ -40,11 +40,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         mFavoriteList = favoriteList;
     }
 
-    public QuestionAdapter(List<Question> questionList, RecyclerViewClickListener listener) {
+    public QuestionAdapter(List<Question> questionList, RecyclerViewClickItemListener<Question> listener) {
         mQuestionList = questionList;
         mQuestionListFull = new ArrayList<>(questionList);
         mListener = listener;
-
     }
 
     @NonNull
@@ -58,7 +57,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder questionViewHolder, int i) {
         Question question = mQuestionList.get(i);
-        questionViewHolder.bind(question, mFavoriteList);
+        questionViewHolder.bind(question, mFavoriteList, i);
     }
 
     @Override
@@ -103,7 +102,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     };
 
     class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         private Question mQuestion;
 
         private TextView mQuestionText;
@@ -111,9 +109,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         private ToggleButton mFavoriteButton;
         private Button mLevelButton;
 
-        private RecyclerViewClickListener mListener;
+        private RecyclerViewClickItemListener<Question> mListener;
+        private int mPosition;
 
-        public QuestionViewHolder(@NonNull View itemView, RecyclerViewClickListener listener) {
+        public QuestionViewHolder(@NonNull View itemView, RecyclerViewClickItemListener<Question> listener) {
             super(itemView);
 
             mQuestionText = itemView.findViewById(R.id.question_question);
@@ -126,7 +125,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             mFavoriteButton.setOnClickListener(this);
         }
 
-        public void bind(Question question, List<Favorite> favorites) {
+        public void bind(Question question, List<Favorite> favorites, int position) {
+            mPosition = position;
             mQuestion = question;
             mQuestionText.setText(mQuestion.getQuestion());
             mAnswerText.setText(mQuestion.getAnswer());
@@ -152,7 +152,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
         @Override
         public void onClick(View view) {
-            mListener.onClick(view, getAdapterPosition());
+            mListener.onClick(view, mQuestion, mPosition);
         }
     }
 }

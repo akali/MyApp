@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 public class QuestionListActivity extends AppCompatActivity {
+    private static final String TAG = QuestionListActivity.class.getSimpleName();
 
     private DatabaseReference mQuestionsDatabaseReference;
     private DatabaseReference mFavoritesDatabaseReference;
@@ -84,16 +85,16 @@ public class QuestionListActivity extends AppCompatActivity {
 
         mPositionName = getIntent().getStringExtra("positionName");
 
-        mAddQuestionButton = (FloatingActionButton) findViewById(R.id.add_question);
-        mRecyclerView = (RecyclerView) findViewById(R.id.questions_recycler);
+        mAddQuestionButton = findViewById(R.id.add_question);
+        mRecyclerView = findViewById(R.id.questions_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDatabase = FirebaseDatabase.getInstance();
         mQuestionsDatabaseReference = mDatabase.getReference().child("Questions");
         mFavoritesDatabaseReference = mDatabase.getReference().child("Favorites");
-        mLevelFilteredQuestionList = new ArrayList<Question>();
-        mLevelNotFilteredQuestionList = new ArrayList<Question>();
-        mQuestionList = new ArrayList<Question>();
-        mFavoriteList = new ArrayList<Favorite>();
+        mLevelFilteredQuestionList = new ArrayList<>();
+        mLevelNotFilteredQuestionList = new ArrayList<>();
+        mQuestionList = new ArrayList<>();
+        mFavoriteList = new ArrayList<>();
 
         mAddQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +135,7 @@ public class QuestionListActivity extends AppCompatActivity {
             Button junButton = findViewById(R.id.filter_junior);
             Button midButton = findViewById(R.id.filter_middle);
             Button senButton = findViewById(R.id.filter_senior);
-            String levelName = "";
+            String levelName;
 
             switch (v.getId()) {
                 case R.id.filter_junior:
@@ -220,22 +221,8 @@ public class QuestionListActivity extends AppCompatActivity {
     }
 
     private void initFavoriteList() {
-        mFavoritesDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Favorite favorite = dataSnapshot1.getValue(Favorite.class);
-                    if (mUser.getEmail().equals(favorite.getUserEmail())) {
-                        mFavoriteList.add(favorite);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("Hello", "Failed to read value.", databaseError.toException());
-            }
-        });
+        Log.d(TAG, "initFavoriteList");
+        initFavoriteListDoThen(null);
     }
 
 
@@ -275,46 +262,48 @@ public class QuestionListActivity extends AppCompatActivity {
         initQuestionList();
     }
 
-    RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+    RecyclerViewClickItemListener <Question> listener = new RecyclerViewClickItemListener<Question>() {
         @Override
-        public void onClick(View view, int position) {
+        public void onClick(View view, final Question item, final int position) {
             switch (view.getId()) {
                 case R.id.question_question:
                     Intent intent = new Intent(view.getContext(), QuestionDetailsActivity.class);
-                    Question question = mQuestionList.get(position);
-                    intent.putExtra("questionDetails", question);
+                    intent.putExtra("questionDetails", item);
                     startActivity(intent);
                     break;
                 case R.id.favorite_question:
-                    if (view.isSelected()) {
-                        initFavoriteList();
-                        removeFromFavorites(position);
+                    Log.d(TAG, "onClick: " + item + " " + position);
+                    if (inFavoriteList(item)) {
+                        Log.d(TAG, "removing from favorites: " + item + " " + position);
+                        initFavoriteListDoThen(new Runnable() {
+                            @Override
+                            public void run() {
+                                removeFromFavorites(item, position);
+                            }
+                        });
                     } else {
-                        addToFavorites(position);
+                        Log.d(TAG, "adding to favorites: " + item + " " + position);
+                        addToFavorites(item, position);
                     }
                     break;
             }
-
         }
     };
 
-    public void removeFromFavorites(int position) {
-        int questionId = mQuestionList.get(position).getId();
-        int index = 0;
+    private boolean inFavoriteList(Question item) {
+        Log.d(TAG, "inFavoriteList: " + item);
         for (Favorite favorite : mFavoriteList) {
-            if (favorite.getQuestionId() == questionId &&
-                    favorite.getUserEmail().equals(mUser.getEmail())) {
-                index = mFavoriteList.indexOf(favorite);
-                String childFavoriteId = Integer.toString(favorite.getId());
-                mFavoritesDatabaseReference.child(childFavoriteId).removeValue();
-            }
+            if (favorite.getQuestionId() == item.getId())
+                return true;
         }
-        mFavoriteList.remove(index);
-        mQuestionAdapter.notifyItemRemoved(index);
+        return false;
     }
 
-    public void addToFavorites(int position) {
-        int questionId = mQuestionList.get(position).getId();
+    private void addToFavorites(Question question, int position) {
+
+        Log.d(TAG, "addToFavorites: " + question + " " + position);
+
+        int questionId = question.getId();
         int maxi = 0;
         for (Favorite favorite : mFavoriteList) {
             if (favorite.getId() > maxi) {
@@ -324,8 +313,50 @@ public class QuestionListActivity extends AppCompatActivity {
         int favoriteId = maxi + 1;
         String childFavoriteId = Integer.toString(favoriteId);
         mFavoritesDatabaseReference.child(childFavoriteId).setValue(
-                new Favorite(favoriteId, questionId, mUser.getEmail()));
+          new Favorite(favoriteId, questionId, mUser.getEmail()));
         mFavoriteList.add(new Favorite(favoriteId, questionId, mUser.getEmail()));
-        mQuestionAdapter.notifyDataSetChanged();
+        mQuestionAdapter.notifyItemChanged(position);
+    }
+
+    private void removeFromFavorites(Question question, int position) {
+        Log.d(TAG, "removeFromFavorites: " + question + " " + position);
+        int questionId = question.getId();
+        for (Favorite favorite : mFavoriteList) {
+            if (favorite.getQuestionId() == questionId &&
+              favorite.getUserEmail().equals(mUser.getEmail())) {
+
+                int index = mFavoriteList.indexOf(favorite);
+                String childFavoriteId = Integer.toString(favorite.getId());
+                mFavoritesDatabaseReference.child(childFavoriteId).removeValue();
+                mFavoriteList.remove(index);
+
+                break;
+            }
+        }
+        mQuestionAdapter.notifyItemChanged(position);
+    }
+
+    private void initFavoriteListDoThen(final Runnable runnable) {
+        Log.d(TAG, "initFavoriteListDoThen");
+        mFavoriteList.clear();
+        mFavoritesDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Favorite favorite = dataSnapshot1.getValue(Favorite.class);
+                    if (mUser.getEmail().equals(favorite.getUserEmail())) {
+                        mFavoriteList.add(favorite);
+                    }
+                }
+                if (runnable != null) {
+                    runnable.run();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("Hello", "Failed to read value.", databaseError.toException());
+            }
+        });
     }
 }
