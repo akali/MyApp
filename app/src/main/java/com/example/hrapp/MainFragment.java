@@ -46,17 +46,17 @@ public class MainFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         int images[] = {R.drawable.slide1, R.drawable.slide2, R.drawable.slide3};
-        mViewFlipper = (ViewFlipper) view.findViewById(R.id.image_flipper);
+        mViewFlipper = view.findViewById(R.id.image_flipper);
 
         for (int image : images) {
             flipperImages(image);
         }
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.positions_recycler);
+        mRecyclerView = view.findViewById(R.id.positions_recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference().child("Positions");
-        mPositionList = new ArrayList<Position>();
+        mPositionList = new ArrayList<>();
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,9 +76,7 @@ public class MainFragment extends Fragment {
         });
 
         return view;
-
     }
-
 
     private void flipperImages(int image) {
         ImageView imageView = new ImageView(getActivity());

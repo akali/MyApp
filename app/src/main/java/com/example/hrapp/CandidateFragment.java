@@ -1,8 +1,11 @@
 package com.example.hrapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.hrapp.models.Candidate;
 import com.example.hrapp.models.CandidateAdapter;
+import com.example.hrapp.models.Language;
 import com.example.hrapp.models.Position;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+
 
 
 public class CandidateFragment extends Fragment {
@@ -33,8 +41,16 @@ public class CandidateFragment extends Fragment {
     private List<Candidate> mCandidateList;
     private CandidateAdapter mAdapter;
 
+    private static final int CREATE_CANDIDATE_REQUEST_CODE = 101;
 
     public CandidateFragment() {
+        // Required empty public constructor
+    }
+
+    public static CandidateFragment newInstance() {
+        CandidateFragment fragment = new CandidateFragment();
+
+        return fragment;
     }
 
 
@@ -73,5 +89,28 @@ public class CandidateFragment extends Fragment {
                 Log.w("Hello", "Failed to read value.", databaseError.toException());
             }
         });
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView recyclerView = view.findViewById(R.id.candidates_recycler);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        List<Candidate> candidates = Arrays.asList(new Candidate
+          (1,
+            "Pavel Durov",
+            Arrays.asList(
+              new Language(1, "C#"),
+              new Language(2, "Java")
+            ),
+            new Position(1, "Database Specialist"),
+            "Junior",
+            "25 y.o. designer from Australia"
+          )
+        );
+
+        recyclerView.setAdapter(new CandidateAdapter(candidates));
     }
 }

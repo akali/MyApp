@@ -75,7 +75,6 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.Positi
                     mPositionImage.setImageResource(R.drawable.ic_data_usage_24dp);
                     break;
             }
-
         }
 
         @Override
