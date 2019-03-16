@@ -57,7 +57,8 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
             mCandidate = candidate;
             mNameTextView.setText(mCandidate.getName());
             mEmailTextView.setText(mCandidate.getEmail());
-            mCandidateLetter.setText(String.valueOf(mCandidate.getName().charAt(0)));
+//            mCandidateLetter.setText(String.valueOf(mCandidate.getName().charAt(0)));
+            mCandidateLetter.setText(String.valueOf("A"));
         }
     }
 }

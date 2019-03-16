@@ -4,7 +4,6 @@ package com.example.hrapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,14 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hrapp.models.Candidate;
 import com.example.hrapp.models.CandidateAdapter;
+import com.example.hrapp.models.Language;
 import com.example.hrapp.models.Position;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,12 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import com.example.hrapp.adapter.CandidateAdapter;
-import com.example.hrapp.models.Candidate;
-import com.example.hrapp.models.Language;
-import com.example.hrapp.models.Position;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,15 +94,7 @@ public class CandidateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = view.findViewById(R.id.add_candidate_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onAddClick();
-            }
-        });
-
-        RecyclerView recyclerView = view.findViewById(R.id.candidates_recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.candidates_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -128,19 +112,5 @@ public class CandidateFragment extends Fragment {
         );
 
         recyclerView.setAdapter(new CandidateAdapter(candidates));
-    }
-
-    private void onAddClick() {
-        Intent intent = new Intent(getContext(), CreateCandidateActivity.class);
-        startActivityForResult(intent, CREATE_CANDIDATE_REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CREATE_CANDIDATE_REQUEST_CODE && resultCode == RESULT_OK) {
-
-        }
     }
 }
