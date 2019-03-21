@@ -1,7 +1,9 @@
 package com.example.hrapp.models;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,7 +84,9 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
                     mCandidateLevel.setText(mCandidate.getLevel());
                     mCandidatePosition.setVisibility(View.VISIBLE);
                     mCandidateLevel.setVisibility(View.VISIBLE);
-                    mCandidateGenerateList.setVisibility(View.VISIBLE);
+                    if (mCandidate.getScore() == 0) {
+                        mCandidateGenerateList.setVisibility(View.VISIBLE);
+                    }
                 }
             });
             mCandidateGenerateList.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +100,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
             if (mCandidate.getScore() != 0) {
                 mCandidateScore.setVisibility(View.VISIBLE);
                 mCandidateScore.setText("Score: " + mCandidate.getScore());
-                mCandidateGenerateList.setEnabled(false);
+                mCandidateScore.setTextColor(Color.parseColor("#00D053"));
             }
         }
     }

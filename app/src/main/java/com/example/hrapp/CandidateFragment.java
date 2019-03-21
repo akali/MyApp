@@ -1,6 +1,7 @@
 package com.example.hrapp;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,6 +42,8 @@ public class CandidateFragment extends Fragment {
     private List<Candidate> mCandidateList;
     private CandidateAdapter mAdapter;
 
+    private boolean firstVisit;
+
     private static final int CREATE_CANDIDATE_REQUEST_CODE = 101;
 
     public CandidateFragment() {
@@ -68,6 +71,7 @@ public class CandidateFragment extends Fragment {
         mCandidateList = new ArrayList<Candidate>();
 
         initCandidateList();
+        firstVisit = true;
 
         return view;
     }
@@ -98,4 +102,18 @@ public class CandidateFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!firstVisit) {
+            mCandidateList.clear();
+            initCandidateList();
+        } else {
+            firstVisit = false;
+        }
+
+    }
+
+
 }

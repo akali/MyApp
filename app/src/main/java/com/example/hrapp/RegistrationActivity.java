@@ -35,7 +35,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        mProgressDialog = new ProgressDialog(this);
         mEmailText = (EditText) findViewById(R.id.user_reg_email);
         mPasswordText = (EditText) findViewById(R.id.user_reg_password);
         mRegisterButton = (Button) findViewById(R.id.user_reg_button);
@@ -46,8 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void registerUser() {
         String email = mEmailText.getText().toString();
         String password = mPasswordText.getText().toString();
-
-        new SpotsDialog.Builder()
+        mProgressDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setTheme(R.style.RegisteringProgressDialog)
                 .build();

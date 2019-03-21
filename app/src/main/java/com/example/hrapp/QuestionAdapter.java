@@ -81,7 +81,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (Question question : mQuestionListFull) {
-                    if (question.getQuestion().toLowerCase().contains(filterPattern)) {
+                    if (question.getQuestion().toLowerCase().contains(filterPattern) ||
+                    question.getAnswer().toLowerCase().contains(filterPattern)) {
                         filteredList.add(question);
                     }
                 }
